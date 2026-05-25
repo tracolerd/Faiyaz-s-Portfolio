@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nurul Faiyaz — DevSecOps Engineer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            mono: ['Space Mono', 'monospace'],
+            display: ['Syne', 'sans-serif'],
+            body: ['DM Sans', 'sans-serif'],
+          },
+          colors: {
+            acid: '#00FF9C',
+            warning: '#FF6B35',
+            cyber: '#00D4FF',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --bg: #070B0F;
+      --fg: #E8EDF2;
+      --card: #0F1620;
+      --accent: #00FF9C;
+      --muted: #8A9BAE;
+      --border: #1E2D3D;
+      --glow: rgba(0,255,156,0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+    /* ── Grid BG ── */
+    .grid-bg {
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.4;
+    }
+
+    /* ── Noise overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.5;
+    }
+
+    /* ── Glowing blobs ── */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      animation: drift 12s ease-in-out infinite alternate;
+    }
+    @keyframes drift {
+      0% { transform: translate(0,0) scale(1); }
+      100% { transform: translate(40px,60px) scale(1.15); }
+    }
+
+    /* ── Floating profile card ── */
+    @keyframes float3d {
+      0%,100% { transform: translateY(0) rotateY(-4deg) rotateX(2deg); }
+      50% { transform: translateY(-18px) rotateY(4deg) rotateX(-2deg); }
+    }
+    .profile-float {
+      animation: float3d 6s ease-in-out infinite;
+      transform-style: preserve-3d;
+    }
+
+    /* ── Typing cursor ── */
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 1.1em;
+      background: var(--accent);
+      margin-left: 4px;
+      vertical-align: middle;
+      animation: blink 0.9s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top:0; left:0; right:0; z-index:100;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      background: color-mix(in srgb, var(--bg) 80%, transparent);
+    }
+
+    /* ── Section fade-in ── */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 0 30px var(--glow);
+      border-color: var(--accent);
+    }
+
+    /* ── Accent text ── */
+    .accent { color: var(--accent); }
+
+    /* ── Button ── */
+    .btn-primary {
+      background: var(--accent);
+      color: #070B0F;
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      padding: 12px 28px;
+      border-radius: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: inline-block;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,255,156,0.4);
+    }
+    .btn-outline {
+      border: 1.5px solid var(--accent);
+      color: var(--accent);
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      padding: 11px 28px;
+      border-radius: 8px;
+      transition: all 0.2s;
+      display: inline-block;
+    }
+    .btn-outline:hover {
+      background: var(--accent);
+      color: #070B0F;
+      box-shadow: 0 8px 30px rgba(0,255,156,0.35);
+    }
+
+    /* ── Timeline ── */
+    .timeline-line {
+      position: absolute;
+      left: 22px;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+    .timeline-dot {
+      width: 14px; height: 14px;
+      background: var(--accent);
+      border-radius: 50%;
+      border: 3px solid var(--bg);
+      flex-shrink: 0;
+      box-shadow: 0 0 14px var(--accent);
+    }
+
+    /* ── Skill bar ── */
+    .skill-bar-fill {
+      height: 4px;
+      background: var(--accent);
+      border-radius: 2px;
+      width: 0;
+      transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    /* ── Image 3D hover ── */
+    .img-3d {
+      transition: transform 0.4s;
+      transform-style: preserve-3d;
+    }
+    .img-3d:hover { transform: perspective(600px) rotateY(6deg) rotateX(-3deg) scale(1.03); }
+
+    /* ── Parallax ── */
+    .parallax-img { transition: transform 0.1s linear; }
+
+    /* ── Social icons ── */
+    .social-icon {
+      width: 48px; height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      transition: all 0.25s;
+      color: var(--muted);
+    }
+    .social-icon:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px var(--glow);
+    }
+
+    /* ── Tag pill ── */
+    .tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: color-mix(in srgb, var(--card) 60%, transparent);
+    }
+
+    /* ── Section label ── */
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    /* ── Scanlines ── */
+    .scanlines::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0,0,0,0.04) 3px,
+        rgba(0,0,0,0.04) 4px
+      );
+      pointer-events: none;
+    }
+
+    /* ── Mobile menu ── */
+    #mobile-menu { display:none; }
+    #mobile-menu.open { display:block; }
+
+    /* ── Separator ── */
+    .sep { width:60px; height:3px; background:var(--accent); border-radius:2px; margin: 12px 0 28px; }
+  </style>
+</head>
+
+<body>
+
+<!-- ══════════════════════════════════════════
+  NAV
+═══════════════════════════════════════════ -->
+<nav>
+  <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+    <a href="#hero" class="font-mono text-sm font-bold" style="color:var(--accent)">NF<span style="color:var(--muted)">./</span></a>
+
+    <!-- Desktop links -->
+    <div class="hidden md:flex items-center gap-8 text-sm" style="color:var(--muted)">
+      <a href="#about" class="hover:text-[var(--accent)] transition-colors">About</a>
+      <a href="#skills" class="hover:text-[var(--accent)] transition-colors">Skills</a>
+      <a href="#experience" class="hover:text-[var(--accent)] transition-colors">Experience</a>
+      <a href="#gallery" class="hover:text-[var(--accent)] transition-colors">Gallery</a>
+      <a href="#contact" class="hover:text-[var(--accent)] transition-colors">Contact</a>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button id="menu-btn" class="md:hidden text-xl" style="color:var(--fg)" aria-label="Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="md:hidden px-6 pb-4 text-sm" style="color:var(--muted)">
+    <div class="flex flex-col gap-4 pt-2">
+      <a href="#about" onclick="closeMobile()">About</a>
+      <a href="#skills" onclick="closeMobile()">Skills</a>
+      <a href="#experience" onclick="closeMobile()">Experience</a>
+      <a href="#gallery" onclick="closeMobile()">Gallery</a>
+      <a href="#contact" onclick="closeMobile()">Contact</a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ══════════════════════════════════════════
+  HERO
+═══════════════════════════════════════════ -->
+<section id="hero" class="relative min-h-screen flex items-center overflow-hidden scanlines">
+  <div class="grid-bg absolute inset-0 z-0"></div>
+  <div class="blob z-0" style="width:500px;height:500px;background:rgba(0,255,156,0.08);top:-100px;right:-100px;animation-duration:14s;"></div>
+  <div class="blob z-0" style="width:350px;height:350px;background:rgba(0,212,255,0.07);bottom:50px;left:-80px;animation-duration:10s;animation-delay:-5s;"></div>
+
+  <div class="max-w-6xl mx-auto px-6 pt-24 pb-16 w-full z-10">
+    <div class="flex flex-col-reverse lg:flex-row items-center gap-16">
+
+      <!-- Text -->
+      <div class="flex-1 text-center lg:text-left">
+        <p class="section-label mb-4" id="hero-label" style="opacity:0">// DevSecOps Engineer</p>
+
+        <h1 class="font-display font-bold leading-tight mb-4" id="hero-name"
+            style="font-size:clamp(2.8rem,6vw,5.2rem);opacity:0;">
+          Nurul<br><span class="accent">Faiyaz</span>
+        </h1>
+
+        <div class="flex items-center justify-center lg:justify-start gap-2 mb-6 font-mono text-base md:text-lg"
+             style="color:var(--muted)" id="hero-typing" style="opacity:0">
+          <span style="color:var(--accent)">$</span>&nbsp;
+          <span id="typed-text"></span><span class="cursor"></span>
+        </div>
+
+        <p class="max-w-lg mx-auto lg:mx-0 mb-8 leading-relaxed" id="hero-desc"
+           style="color:var(--muted);opacity:0;font-size:0.97rem;">
+          Bridging the gap between <strong style="color:var(--fg)">Software Quality Assurance</strong> and
+          <strong style="color:var(--fg)">Cloud Infrastructure Security</strong> — delivering flawless,
+          secure, and compliant software at scale.
+        </p>
+
+        <div class="flex flex-wrap gap-3 justify-center lg:justify-start" id="hero-btns" style="opacity:0">
+          <a href="#experience" class="btn-primary">View My Work</a>
+          <a href="#contact" class="btn-outline">Get In Touch</a>
+        </div>
+
+        <div class="flex gap-8 mt-12 justify-center lg:justify-start" id="hero-stats" style="opacity:0">
+          <div>
+            <div class="font-display font-bold text-2xl accent">5.00</div>
+            <div class="text-xs font-mono" style="color:var(--muted)">GPA — SSC & HSC</div>
+          </div>
+          <div style="width:1px;background:var(--border)"></div>
+          <div>
+            <div class="font-display font-bold text-2xl accent">3+</div>
+            <div class="text-xs font-mono" style="color:var(--muted)">Years Experience</div>
+          </div>
+          <div style="width:1px;background:var(--border)"></div>
+          <div>
+            <div class="font-display font-bold text-2xl accent">99.9%</div>
+            <div class="text-xs font-mono" style="color:var(--muted)">Uptime SLAs</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile Image -->
+      <div class="flex-shrink-0 flex items-center justify-center" id="hero-img" style="opacity:0">
+        <div class="profile-float" style="perspective:800px">
+          <div class="relative img-3d">
+            <div class="absolute -inset-3 rounded-3xl" style="background:conic-gradient(from 180deg, var(--accent), #00D4FF, var(--accent));opacity:0.35;filter:blur(12px);"></div>
+            <!-- PHOTO-PROFILE: Replace src with your profile photo path, e.g., src="images/profile.jpg" -->
+            <img
+              src="profile.JPG"
+              alt="Nurul Faiyaz"
+              class="relative rounded-3xl object-cover"
+              style="width:260px;height:320px;border:2px solid var(--border);"
+            />
+            <div class="absolute -bottom-4 -right-4 card px-4 py-2 text-xs font-mono" style="background:var(--card)">
+              <span class="accent">●</span> Available for Hire
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-xs font-mono" style="color:var(--muted)">
+    <span>scroll</span>
+    <div style="width:1px;height:40px;background:linear-gradient(to bottom,var(--accent),transparent)"></div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+  ABOUT
+═══════════════════════════════════════════ -->
+<section id="about" class="py-28 relative">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="reveal grid lg:grid-cols-2 gap-16 items-center">
+      <div>
+        <p class="section-label">01 — About Me</p>
+        <div class="sep"></div>
+        <h2 class="font-display font-bold text-3xl md:text-4xl mb-6">Where Security<br>Meets Quality</h2>
+        <p class="mb-5 leading-relaxed" style="color:var(--muted)">
+          I'm <strong style="color:var(--fg)">Nurul Faiyaz</strong>, a DevSecOps Engineer currently pursuing my
+          BSc in Computer Science & Engineering at <strong style="color:var(--fg)">East West University</strong>, Dhaka.
+        </p>
+        <p class="mb-5 leading-relaxed" style="color:var(--muted)">
+          My expertise lives at the intersection of <strong style="color:var(--fg)">Software Quality Assurance</strong>
+          and <strong style="color:var(--fg)">Cloud Infrastructure Security</strong>. From architecting test automation
+          frameworks to enforcing Zero Trust policies in FinTech and Healthcare environments, I translate complex security
+          challenges into robust engineering solutions.
+        </p>
+        <p class="leading-relaxed" style="color:var(--muted)">
+          I believe that security and quality aren't constraints — they're <em style="color:var(--accent)">competitive advantages</em>
+          embedded into every line of code and every pipeline stage.
+        </p>
+        <div class="flex flex-wrap gap-3 mt-8">
+          <span class="tag">🏫 SSC 2020 — GPA 5.00</span>
+          <span class="tag">🎓 HSC 2022 — GPA 5.00</span>
+          <span class="tag">💻 BSc CSE — EWU</span>
+        </div>
+      </div>
+
+      <div class="card p-8">
+        <div class="grid grid-cols-1 gap-5">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center text-sm flex-shrink-0" style="background:var(--glow);color:var(--accent)">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <div>
+              <div class="font-semibold mb-1">Zero Trust Security</div>
+              <div class="text-sm" style="color:var(--muted)">PCI-DSS & HIPAA compliant environments, IAM with PoLP/RBAC</div>
+            </div>
+          </div>
+          <div style="height:1px;background:var(--border)"></div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center text-sm flex-shrink-0" style="background:rgba(0,212,255,0.1);color:#00D4FF">
+              <i class="fa-solid fa-cloud"></i>
+            </div>
+            <div>
+              <div class="font-semibold mb-1">Multi-Cloud Infrastructure</div>
+              <div class="text-sm" style="color:var(--muted)">AWS · Azure · GCP — VPC design, KMS encryption, posture hardening</div>
+            </div>
+          </div>
+          <div style="height:1px;background:var(--border)"></div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center text-sm flex-shrink-0" style="background:rgba(255,107,53,0.1);color:#FF6B35">
+              <i class="fa-solid fa-flask"></i>
+            </div>
+            <div>
+              <div class="font-semibold mb-1">Test Automation Architect</div>
+              <div class="text-sm" style="color:var(--muted)">Selenium · Cypress · Playwright · Postman · scalable SDLC/STLC design</div>
+            </div>
+          </div>
+          <div style="height:1px;background:var(--border)"></div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center text-sm flex-shrink-0" style="background:var(--glow);color:var(--accent)">
+              <i class="fa-solid fa-code-branch"></i>
+            </div>
+            <div>
+              <div class="font-semibold mb-1">CI/CD Security Integration</div>
+              <div class="text-sm" style="color:var(--muted)">Jenkins · GitHub Actions · Docker · Kubernetes · Terraform</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+  SKILLS
+═══════════════════════════════════════════ -->
+<section id="skills" class="py-28" style="background:color-mix(in srgb, var(--card) 50%, transparent)">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center reveal mb-16">
+      <p class="section-label">02 — Competencies</p>
+      <div class="sep mx-auto"></div>
+      <h2 class="font-display font-bold text-3xl md:text-4xl">Skills & Technologies</h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="card p-6 reveal" style="transition-delay:0.05s">
+        <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 text-xl" style="background:rgba(255,107,53,0.12);color:#FF6B35">
+          <i class="fa-solid fa-vial-circle-check"></i>
+        </div>
+        <h3 class="font-display font-bold text-lg mb-4">QA & Automation</h3>
+        <div class="space-y-3">
+          <div><div class="flex justify-between text-xs mb-1" style="color:var(--muted)"><span>Selenium</span><span>90%</span></div><div style="height:4px;background:var(--border);border-radius:2px"><div class="skill-bar-fill" data-w="90"></div></div></div>
+          <div><div class="flex justify-between text-xs mb-1" style="color:var(--muted)"><span>Cypress</span><span>85%</span></div><div style="height:4px;background:var(--border);border-radius:2px"><div class="skill-bar-fill" data-w="85"></div></div></div>
+          <div><div class="flex justify-between text-xs mb-1" style="color:var(--muted)"><span>Playwright</span><span>82%</span></div><div style="height:4px;background:var(--border);border-radius:2px"><div class="skill-bar-fill" data-w="82"></div></div></div>
+          <div><div class="flex justify-between text-xs mb-1" style="color:var(--muted)"><span>Postman / API</span><span>88%</span></div><div style="height:4px;background:var(--border);border-radius:2px"><div class="skill-bar-fill" data-w="88"></div></div></div>
+        </div>
+      </div>
+
+      <div class="card p-6 reveal" style="transition-delay:0.1s">
+        <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 text-xl" style="background:rgba(0,212,255,0.12);color:#00D4FF">
+          <i class="fa-solid fa-cloud-bolt"></i>
+        </div>
+        <h3 class="font-display font-bold text-lg mb-4">Cloud Security</h3>
+        <div class="space-y-3">
+          <div><div class="flex justify-between text-xs mb-1" style="color:var(--muted)"><span>AWS</span><span>88%</span></div><div style="height:4px;background:var(--border);border-radius:2px"><div class="skill-bar-fill" data-w="88"></div></div></div>
+          <div><div class="flex justify-between text-xs mb-1" style="color:var(--muted)"><span>Azure</span><span>80%</span></div><div style="height:4px;background:var(--border);border-radius:2px"><div class="skill-bar-fill" data-w="80"></div></div></div>
+          <div><div class="flex justify-between text-xs mb-1" style="color:var(--muted)"><span>IAM / RBAC</span><span>92%</span></div><div style="height:4px;background:var(--border);border-radius:2px"><div class="skill-bar-fill" data-w="92"></div></div></div>
+          <div><div class="flex justify-between text-xs mb-1" style="color:var(--muted)"><span>GCP / KMS</span><span>75%</span></div><div style="height:4px;background:var(--border);border-radius:2px"><div class="skill-bar-fill" data-w="75"></div></div></div>
+        </div>
+      </div>
+
+      <div class="card p-6 reveal" style="transition-delay:0.15s">
+        <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 text-xl" style="background:var(--glow);color:var(--accent)">
+          <i class="fa-brands fa-docker"></i>
+        </div>
+        <h3 class="font-display font-bold text-lg mb-4">DevSecOps / CI-CD</h3>
+        <div class="space-y-3">
+          <div><div class="flex justify-between text-xs mb-1" style="color:var(--muted)"><span>Jenkins</span><span>86%</span></div><div style="height:4px;background:var(--border);border-radius:2px"><div class="skill-bar-fill" data-w="86"></div></div></div>
+          <div><div class="flex justify-between text-xs mb-1" style="color:var(--muted)"><span>GitHub Actions</span><span>90%</span></div><div style="height:4px;background:var(--border);border-radius:2px"><div class="skill-bar-fill" data-w="90"></div></div></div>
+          <div><div class="flex justify-between text-xs mb-1" style="color:var(--muted)"><span>Docker / K8s</span><span>85%</span></div><div style="height:4px;background:var(--border);border-radius:2px"><div class="skill-bar-fill" data-w="85"></div></div></div>
+          <div><div class="flex justify-between text-xs mb-1" style="color:var(--muted)"><span>Terraform</span><span>78%</span></div><div style="height:4px;background:var(--border);border-radius:2px"><div class="skill-bar-fill" data-w="78"></div></div></div>
+        </div>
+      </div>
+
+      <div class="card p-6 reveal" style="transition-delay:0.2s">
+        <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 text-xl" style="background:rgba(138,155,174,0.15);color:var(--muted)">
+          <i class="fa-solid fa-brain"></i>
+        </div>
+        <h3 class="font-display font-bold text-lg mb-4">Soft Skills</h3>
+        <div class="flex flex-wrap gap-2 mt-1">
+          <span class="tag">Communication</span>
+          <span class="tag">Leadership</span>
+          <span class="tag">Adaptability</span>
+          <span class="tag">Problem-Solving</span>
+          <span class="tag">Teamwork</span>
+          <span class="tag">Agile/Scrum</span>
+          <span class="tag">EI/Empathy</span>
+          <span class="tag">Time Mgmt</span>
+          <span class="tag">Risk Assessment</span>
+          <span class="tag">Incident Triage</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Languages row -->
+    <div class="mt-8 card p-6 reveal">
+      <h3 class="font-display font-semibold mb-5 text-sm" style="color:var(--muted)">PROGRAMMING LANGUAGES</h3>
+      <div class="flex flex-wrap gap-4">
+        <div class="flex flex-col items-center gap-2">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl" style="background:var(--glow)"><i class="fa-brands fa-java" style="color:var(--accent)"></i></div>
+          <span class="text-xs font-mono" style="color:var(--muted)">Java</span>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl" style="background:rgba(0,212,255,0.1)"><i class="fa-brands fa-python" style="color:#00D4FF"></i></div>
+          <span class="text-xs font-mono" style="color:var(--muted)">Python</span>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl" style="background:rgba(255,215,0,0.1)"><i class="fa-brands fa-js" style="color:#FFD700"></i></div>
+          <span class="text-xs font-mono" style="color:var(--muted)">JavaScript</span>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl" style="background:rgba(138,155,174,0.12)"><i class="fa-solid fa-k" style="color:var(--muted)"></i></div>
+          <span class="text-xs font-mono" style="color:var(--muted)">Kotlin</span>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl" style="background:rgba(255,107,53,0.1)"><i class="fa-solid fa-database" style="color:#FF6B35"></i></div>
+          <span class="text-xs font-mono" style="color:var(--muted)">SQL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+  EXPERIENCE TIMELINE
+═══════════════════════════════════════════ -->
+<section id="experience" class="py-28">
+  <div class="max-w-4xl mx-auto px-6">
+    <div class="text-center reveal mb-16">
+      <p class="section-label">03 — Work History</p>
+      <div class="sep mx-auto"></div>
+      <h2 class="font-display font-bold text-3xl md:text-4xl">Professional Experience</h2>
+    </div>
+
+    <div class="relative pl-12">
+      <div class="timeline-line"></div>
+
+      <div class="reveal relative mb-10">
+        <div class="absolute -left-12 top-1"><div class="timeline-dot"></div></div>
+        <div class="card p-6">
+          <div class="flex flex-wrap justify-between items-start gap-2 mb-3">
+            <div>
+              <h3 class="font-display font-bold text-xl">Security Automation & QA Manager</h3>
+              <p class="text-sm mt-1 font-mono" style="color:var(--accent)">FinTech / Enterprise Domain</p>
+            </div>
+            <span class="tag">2022 — Present</span>
+          </div>
+          <p class="text-sm mb-4 leading-relaxed" style="color:var(--muted)">
+            Directed end-to-end SDLC/STLC processes across multi-disciplinary engineering teams.
+            Integrated static (SAST) and dynamic (DAST) security scanners into CI/CD pipelines,
+            achieving a measurable reduction in post-deployment vulnerabilities. Championed
+            shift-left security practices and led monthly threat modelling workshops.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span class="tag">SAST/DAST</span><span class="tag">CI/CD</span><span class="tag">Jenkins</span>
+            <span class="tag">Shift-Left Security</span><span class="tag">Threat Modelling</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal relative mb-10" style="transition-delay:0.1s">
+        <div class="absolute -left-12 top-1"><div class="timeline-dot"></div></div>
+        <div class="card p-6">
+          <div class="flex flex-wrap justify-between items-start gap-2 mb-3">
+            <div>
+              <h3 class="font-display font-bold text-xl">Cloud Security Administrator</h3>
+              <p class="text-sm mt-1 font-mono" style="color:#00D4FF">Healthcare / Enterprise Domain</p>
+            </div>
+            <span class="tag">2021 — 2022</span>
+          </div>
+          <p class="text-sm mb-4 leading-relaxed" style="color:var(--muted)">
+            Managed daily cloud security posture across AWS and Azure environments. Hardened
+            Linux server configurations and ERP systems against CVEs. Ensured continuous
+            compliance with PCI-DSS and HIPAA standards through automated audit pipelines
+            and real-time vulnerability dashboards.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span class="tag">AWS</span><span class="tag">Azure</span><span class="tag">PCI-DSS</span>
+            <span class="tag">HIPAA</span><span class="tag">Linux Hardening</span><span class="tag">IAM</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal relative mb-10" style="transition-delay:0.2s">
+        <div class="absolute -left-12 top-1"><div class="timeline-dot"></div></div>
+        <div class="card p-6">
+          <div class="flex flex-wrap justify-between items-start gap-2 mb-3">
+            <div>
+              <h3 class="font-display font-bold text-xl">SDET — Emergency Services Platform</h3>
+              <p class="text-sm mt-1 font-mono" style="color:#FF6B35">Critical Infrastructure</p>
+            </div>
+            <span class="tag">2020 — 2021</span>
+          </div>
+          <p class="text-sm mb-4 leading-relaxed" style="color:var(--muted)">
+            Architected scalable test automation frameworks for mission-critical emergency
+            networks requiring 99.9% uptime SLAs. Conducted rigorous functional, regression,
+            performance, and security testing cycles. Collaborated with cross-functional
+            teams under strict Agile/Scrum governance.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span class="tag">Selenium</span><span class="tag">Playwright</span><span class="tag">99.9% SLA</span>
+            <span class="tag">Regression Testing</span><span class="tag">Agile/Scrum</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal relative" style="transition-delay:0.3s">
+        <div class="absolute -left-12 top-1"><div class="timeline-dot" style="background:var(--muted);box-shadow:none;"></div></div>
+        <div class="card p-6">
+          <div class="flex flex-wrap justify-between items-start gap-2 mb-1">
+            <div>
+              <h3 class="font-display font-bold text-xl">BSc in Computer Science & Engineering</h3>
+              <p class="text-sm mt-1 font-mono" style="color:var(--muted)">East West University, Aftabnagar, Dhaka</p>
+            </div>
+            <span class="tag">2022 — Ongoing</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+  GALLERY
+═══════════════════════════════════════════ -->
+<section id="gallery" class="py-28" style="background:color-mix(in srgb, var(--card) 50%, transparent)">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center reveal mb-16">
+      <p class="section-label">04 — Gallery</p>
+      <div class="sep mx-auto"></div>
+      <h2 class="font-display font-bold text-3xl md:text-4xl">Photos & Work</h2>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <!-- PHOTO-GALLERY-1: Replace src with your featured/landscape photo -->
+      <div class="col-span-2 row-span-2 reveal img-3d overflow-hidden rounded-2xl" style="transition-delay:0.05s">
+        <img src="feature2.PNG" alt="Featured photo"
+             class="w-full h-full object-cover parallax-img" style="min-height:300px" />
+      </div>
+      <!-- PHOTO-GALLERY-2: Replace src with your technical work photo -->
+      <div class="reveal img-3d overflow-hidden rounded-2xl" style="transition-delay:0.1s">
+        <img src="feature.JPG" alt="Technical work"
+             class="w-full h-full object-cover parallax-img" style="min-height:150px" />
+      </div>
+      <!-- PHOTO-GALLERY-3: Replace src with a personal/landscape photo -->
+      <div class="reveal img-3d overflow-hidden rounded-2xl" style="transition-delay:0.15s">
+        <img src="photo1.jpg" alt="Landscape photo"
+             class="w-full h-full object-cover parallax-img" style="min-height:150px" />
+      </div>
+      <!-- PHOTO-GALLERY-4: Replace src with an event/conference photo -->
+      <div class="reveal img-3d overflow-hidden rounded-2xl" style="transition-delay:0.2s">
+        <img src="photo5.jpg" alt="Event photo"
+             class="w-full h-full object-cover parallax-img" style="min-height:150px" />
+      </div>
+      <!-- PHOTO-GALLERY-5: Replace src with another photo -->
+      <div class="reveal img-3d overflow-hidden rounded-2xl" style="transition-delay:0.25s">
+        <img src="photo6.jpg" alt="Another photo"
+             class="w-full h-full object-cover parallax-img" style="min-height:150px" />
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+  CONTACT
+═══════════════════════════════════════════ -->
+<section id="contact" class="py-28">
+  <div class="max-w-3xl mx-auto px-6 text-center">
+    <div class="reveal">
+      <p class="section-label">05 — Let's Connect</p>
+      <div class="sep mx-auto"></div>
+      <h2 class="font-display font-bold text-3xl md:text-4xl mb-6">Get In Touch</h2>
+      <p class="mb-12 leading-relaxed" style="color:var(--muted)">
+        Whether you're looking for a DevSecOps engineer, a security automation specialist,
+        or just want to talk tech — my inbox is always open.
+      </p>
+
+      <div class="flex justify-center gap-4 mb-12">
+        <a href="https://www.facebook.com/share/1B3bGqLGrn/?mibextid=wwXIfr" class="social-icon" title="Facebook" aria-label="Facebook" target="_blank" rel="noopener">
+          <i class="fa-brands fa-facebook-f"></i>
+        </a>
+        <a href="https://www.instagram.com/tracolerd?igsh=dmM1M2RoeGswcHp2&utm_source=qr" class="social-icon" title="Instagram" aria-label="Instagram" target="_blank" rel="noopener">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+        <a href="http://linkedin.com/in/nurul-faiyaz-6644a6283" class="social-icon" title="LinkedIn" aria-label="LinkedIn" target="_blank" rel="noopener">
+          <i class="fa-brands fa-linkedin-in"></i>
+        </a>
+        <a href="https://github.com/CyberPerfectionist" class="social-icon" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener">
+          <i class="fa-brands fa-github"></i>
+        </a>
+        <a href="mailto:scrollfaiyaz@gmail.com" class="social-icon" title="Email" aria-label="Email">
+          <i class="fa-solid fa-envelope"></i>
+        </a>
+      </div>
+
+      <a href="mailto:scrollfaiyaz@gmail.com" class="btn-primary">
+        <i class="fa-solid fa-paper-plane mr-2"></i> Send Me an Email
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+  FOOTER
+═══════════════════════════════════════════ -->
+<footer class="py-8 border-t" style="border-color:var(--border)">
+  <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-mono" style="color:var(--muted)">
+    <span>© 2025 Nurul Faiyaz. All rights reserved.</span>
+    <span style="color:var(--accent)">Built with ♥ and 0 vulnerabilities</span>
+  </div>
+</footer>
+
+
+<!-- ══════════════════════════════════════════
+  JAVASCRIPT
+═══════════════════════════════════════════ -->
+<script>
+  // ── Mobile Menu ───────────────────────────
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+  function closeMobile() { mobileMenu.classList.remove('open'); }
+
+  // ── Typing Effect ─────────────────────────
+  const phrases = [
+    'DevSecOps Engineer',
+    'Security Automation',
+    'Cloud Security Admin',
+    'QA Architect',
+    'CI/CD Pipeline Expert',
+    'Zero Trust Evangelist',
+  ];
+  let pi = 0, ci = 0, deleting = false;
+  const typedEl = document.getElementById('typed-text');
+
+  function type() {
+    const phrase = phrases[pi];
+    if (!deleting) {
+      typedEl.textContent = phrase.slice(0, ++ci);
+      if (ci === phrase.length) { deleting = true; setTimeout(type, 1600); return; }
+    } else {
+      typedEl.textContent = phrase.slice(0, --ci);
+      if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; }
+    }
+    setTimeout(type, deleting ? 45 : 80);
+  }
+  type();
+
+  // ── GSAP Hero entrance ────────────────────
+  gsap.registerPlugin(ScrollTrigger);
+
+  const heroTl = gsap.timeline({ delay: 0.3 });
+  heroTl
+    .to('#hero-label',  { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0)
+    .to('#hero-name',   { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 0.15)
+    .to('#hero-typing', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.3)
+    .to('#hero-desc',   { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.45)
+    .to('#hero-btns',   { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.58)
+    .to('#hero-stats',  { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.68)
+    .to('#hero-img',    { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }, 0.2);
+
+  // ── Intersection Observer for reveals ─────
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        e.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
+          bar.style.width = bar.dataset.w + '%';
+        });
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── Parallax images on scroll ─────────────
+  function onScroll() {
+    document.querySelectorAll('.parallax-img').forEach(img => {
+      const rect = img.getBoundingClientRect();
+      const offset = (rect.top + rect.height / 2 - window.innerHeight / 2) * 0.08;
+      img.style.transform = `translateY(${offset}px)`;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // ── Nav active link highlight ─────────────
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a[href^="#"]');
+
+  const sectionObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => {
+          const active = l.getAttribute('href') === '#' + e.target.id;
+          l.style.color = active ? 'var(--accent)' : '';
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => sectionObserver.observe(s));
+
+  // ── 3D card tilt on mouse move ────────────
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = `perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-6px) scale(1.01)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+</script>
+
+</body>
+</html>
