@@ -1,20 +1,27 @@
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:071014,50:087F5B,100:0B1220&height=190&section=header&text=Nurul%20Faiyaz%20%C2%B7%20Portfolio&fontSize=42&fontColor=F1F5F9&fontAlignY=38&animation=fadeIn&desc=A%20motion-rich%20personal%20website%20built%20with%20HTML%2C%20Tailwind%20CSS%20and%20GSAP&descAlignY=61&descSize=15" alt="Nurul Faiyaz · Portfolio animated project banner" width="100%" />
+  <img src="assets/readme-hero.svg" alt="Nurul Faiyaz · Portfolio — custom animated project banner" width="100%" />
 </p>
-<h1 align="center">Nurul Faiyaz — Portfolio</h1>
 
+<h1 align="center">Nurul Faiyaz · Portfolio</h1>
 
-<div align="center">
+<p align="center">
+  <strong>An early chapter in a motion-led digital identity.</strong><br/>
+  A lightweight single-page portfolio built with HTML, Tailwind CSS and GSAP for responsive layout and scroll-driven motion.
+</p>
 
-[![HTML](https://img.shields.io/badge/HTML5-Portfolio-E34F26?logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![GSAP](https://img.shields.io/badge/Animation-GSAP-88CE02?logo=greensock&logoColor=111827)](https://gsap.com/)
-[![Status](https://img.shields.io/badge/Status-Portfolio%20website-0F766E)](https://github.com/tracolerd/Faiyaz-s-Portfolio)
+<p align="center">
+  <a href="https://developer.mozilla.org/en-US/docs/Web/HTML"><img src="https://img.shields.io/badge/HTML5-Structure-E34F26?style=for-the-badge&amp;logo=html5&amp;logoColor=white" alt="HTML5 — Structure" /></a>
+  <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind_CSS-Styling-06B6D4?style=for-the-badge&amp;logo=tailwindcss&amp;logoColor=white" alt="Tailwind CSS — Styling" /></a>
+  <a href="https://gsap.com/"><img src="https://img.shields.io/badge/GSAP-Motion-88CE02?style=for-the-badge&amp;logo=greensock&amp;logoColor=white" alt="GSAP — Motion" /></a>
+</p>
 
-**A dark, motion-led portfolio for presenting Nurul Faiyaz’s professional identity and work.**
+<p align="center">
+  <a href="#project-details">Overview</a> · <a href="#project-setup">Get started</a> · <a href="#creator-developer-maintainer">Creator</a>
+</p>
 
-</div>
+---
 
+<a id="project-details"></a>
 ## Overview
 
 This repository contains a single-page portfolio built with HTML, Tailwind CSS loaded from its CDN, and GSAP/ScrollTrigger for motion and scrolling effects. The source is intentionally lightweight and does not require a Node.js build step.
@@ -29,6 +36,7 @@ This repository contains a single-page portfolio built with HTML, Tailwind CSS l
 | Typography | Google Fonts |
 | Icons | Font Awesome CDN |
 
+<a id="project-setup"></a>
 ## Run locally
 
 1. Clone the repository:
@@ -58,20 +66,22 @@ This is a front-end portfolio website, not a backend service. Deployment can use
 ---
 ---
 
+---
+
 ## Creator, Developer & Maintainer
 
-**Created, designed, developed, and maintained by [Nurul Faiyaz](https://github.com/tracolerd).**
+**Created, designed, developed, documented, and maintained by [Nurul Faiyaz](https://github.com/tracolerd).**
 
-This project is independently built and maintained by Nurul Faiyaz. The project's design, implementation, and documentation are his work.
+Designed, implemented, documented, and maintained independently by Nurul Faiyaz.
 
 <p align="center">
-  <a href="https://www.facebook.com/faiyaz.888"><img src="https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white" alt="Facebook" /></a>
-  <a href="https://www.instagram.com/tracolerd"><img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram" /></a>
-  <a href="https://www.linkedin.com/in/faiyaz-xyz"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
-  <a href="https://x.com/faiyaz_explores"><img src="https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white" alt="X" /></a>
-  <a href="https://github.com/tracolerd"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
-  <a href="mailto:scrollfaiyaz@gmail.com"><img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
-  <a href="https://nurul-faiyaz.netlify.app/"><img src="https://img.shields.io/badge/Portfolio-Visit%20Website-0F766E?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Personal website" /></a>
+  <a href="https://www.facebook.com/faiyaz.888"><img src="https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&amp;logo=facebook&amp;logoColor=white" alt="Facebook" /></a>
+  <a href="https://www.instagram.com/tracolerd"><img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&amp;logo=instagram&amp;logoColor=white" alt="Instagram" /></a>
+  <a href="https://www.linkedin.com/in/faiyaz-xyz"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&amp;logo=linkedin&amp;logoColor=white" alt="LinkedIn" /></a>
+  <a href="https://x.com/faiyaz_explores"><img src="https://img.shields.io/badge/X-000000?style=for-the-badge&amp;logo=x&amp;logoColor=white" alt="X" /></a>
+  <a href="https://github.com/tracolerd"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&amp;logo=github&amp;logoColor=white" alt="GitHub" /></a>
+  <a href="mailto:scrollfaiyaz@gmail.com"><img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&amp;logo=gmail&amp;logoColor=white" alt="Email" /></a>
+  <a href="https://nurul-faiyaz.netlify.app/"><img src="https://img.shields.io/badge/Portfolio-Visit%20Website-0F766E?style=for-the-badge&amp;logo=googlechrome&amp;logoColor=white" alt="Website" /></a>
 </p>
 
 <p align="center">
@@ -83,3 +93,7 @@ This project is independently built and maintained by Nurul Faiyaz. The project'
   <a href="mailto:scrollfaiyaz@gmail.com">Email</a> ·
   <a href="https://nurul-faiyaz.netlify.app/">Website</a>
 </p>
+
+## License
+
+See [LICENSE](LICENSE) for the license terms.
